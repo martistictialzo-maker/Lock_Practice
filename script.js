@@ -13,7 +13,7 @@ const LOCK_COUNT = 10;
 
 const PENALTY_SECONDS = 3;
 
-const TOTAL_LOCK_IMAGES = 18;
+const TOTAL_LOCK_IMAGES = 17;
 
 
 // ======================================================
