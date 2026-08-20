@@ -11,9 +11,9 @@ const TOTAL_SETS = 5;
 
 const LOCK_COUNT = 10;
 
-const PENALTY_SECONDS = 3;
+const WRONG_COOLDOWN_SECONDS = 3;
 
-const TOTAL_LOCK_IMAGES = 17;
+const TOTAL_LOCK_IMAGES = 20;
 
 
 // ======================================================
@@ -71,8 +71,6 @@ let setStartTime = 0;
 
 let timerInterval = null;
 
-let penaltyTime = 0;
-
 let completedTimes = [];
 
 let gameFinished = false;
@@ -80,6 +78,8 @@ let gameFinished = false;
 let acceptingClicks = false;
 
 let countdownRunning = false;
+
+let wrongCooldownTimeout = null;
 
 
 // ======================================================
@@ -89,87 +89,6 @@ let countdownRunning = false;
 function getLockImage(number) {
 
     return `images/Lock${number}.png`;
-
-}
-
-
-// ======================================================
-// CREATE RANDOM LOCK SET
-// ======================================================
-
-function createLockSet() {
-
-    /*
-        10 TOTAL CARDS
-
-        9 different lock images
-        +
-        1 duplicate
-
-        Example:
-
-        Lock3
-        Lock7
-        Lock12
-        Lock3  <-- matching pair
-        Lock1
-        Lock15
-        Lock5
-        Lock9
-        Lock18
-        Lock2
-    */
-
-
-    const available =
-        Array.from(
-            {
-                length: TOTAL_LOCK_IMAGES
-            },
-            (_, index) => index + 1
-        );
-
-
-    // Shuffle all available locks
-
-    shuffleArray(available);
-
-
-    // Pick 9 unique images
-
-    const selected =
-        available.slice(0, 9);
-
-
-    // Randomly choose which image gets duplicated
-
-    const pairIndex =
-        Math.floor(
-            Math.random() * selected.length
-        );
-
-
-    const pairLock =
-        selected[pairIndex];
-
-
-    // 9 unique + 1 duplicate = 10 cards
-
-    const cards = [
-        ...selected,
-        pairLock
-    ];
-
-
-    // Randomize their positions
-
-    shuffleArray(cards);
-
-
-    return {
-        cards: cards,
-        pairLock: pairLock
-    };
 
 }
 
@@ -191,7 +110,6 @@ function shuffleArray(array) {
                 Math.random() * (i + 1)
             );
 
-
         [
             array[i],
             array[j]
@@ -207,10 +125,194 @@ function shuffleArray(array) {
 
 
 // ======================================================
+// CREATE LOCK SET
+// ======================================================
+
+function createLockSet() {
+
+    /*
+        10 total cards.
+
+        9 different lock images.
+
+        1 of those 9 is duplicated.
+    */
+
+
+    const available =
+        Array.from(
+            {
+                length: TOTAL_LOCK_IMAGES
+            },
+            (_, index) => index + 1
+        );
+
+
+    // Shuffle all 20 locks
+
+    shuffleArray(available);
+
+
+    // Take 9 unique locks
+
+    const selected =
+        available.slice(0, 9);
+
+
+    // Pick one to duplicate
+
+    const pairIndex =
+        Math.floor(
+            Math.random() *
+            selected.length
+        );
+
+
+    const pairLock =
+        selected[pairIndex];
+
+
+    // Create 10 cards
+
+    const cards = [
+        ...selected,
+        pairLock
+    ];
+
+
+    // Shuffle card positions
+
+    shuffleArray(cards);
+
+
+    return {
+
+        cards: cards,
+
+        pairLock: pairLock
+
+    };
+
+}
+
+
+// ======================================================
+// START BUTTON
+// ======================================================
+
+startButton.addEventListener(
+    "click",
+    startCountdown
+);
+
+
+// ======================================================
+// COUNTDOWN
+// ======================================================
+
+function startCountdown() {
+
+    if (countdownRunning) {
+        return;
+    }
+
+
+    countdownRunning = true;
+
+
+    startScreen.style.display =
+        "none";
+
+
+    countdown.style.display =
+        "flex";
+
+
+    let count = 3;
+
+
+    countdown.textContent =
+        count;
+
+
+    const countdownInterval =
+        setInterval(
+            () => {
+
+                count--;
+
+
+                if (count > 0) {
+
+                    countdown.textContent =
+                        count;
+
+                    return;
+
+                }
+
+
+                if (count === 0) {
+
+                    countdown.textContent =
+                        "GO!";
+
+                    return;
+
+                }
+
+            },
+            1000
+        );
+
+
+    setTimeout(
+        () => {
+
+            clearInterval(
+                countdownInterval
+            );
+
+
+            countdown.style.display =
+                "none";
+
+
+            countdownRunning =
+                false;
+
+
+            startGame();
+
+        },
+        4000
+    );
+
+}
+
+
+// ======================================================
 // START GAME
 // ======================================================
 
 function startGame() {
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    if (wrongCooldownTimeout) {
+
+        clearTimeout(
+            wrongCooldownTimeout
+        );
+
+        wrongCooldownTimeout =
+            null;
+
+    }
+
 
     currentSet = 1;
 
@@ -218,17 +320,19 @@ function startGame() {
 
     gameFinished = false;
 
-    acceptingClicks = true;
-
-    penaltyTime = 0;
+    acceptingClicks = false;
 
     selectedLocks = [];
 
     setTimes.innerHTML = "";
 
-    finalResult.style.display = "none";
+    finalResult.style.display =
+        "none";
 
-    timerDisplay.textContent = "0.00";
+
+    timerDisplay.textContent =
+        "0.00";
+
 
     startSet();
 
@@ -241,34 +345,44 @@ function startGame() {
 
 function startSet() {
 
-    clearInterval(timerInterval);
+    clearInterval(
+        timerInterval
+    );
+
+
+    if (wrongCooldownTimeout) {
+
+        clearTimeout(
+            wrongCooldownTimeout
+        );
+
+        wrongCooldownTimeout =
+            null;
+
+    }
+
 
     selectedLocks = [];
-
-    penaltyTime = 0;
 
     acceptingClicks = true;
 
     gameFinished = false;
 
 
-    // Update set number
-
     setNumberDisplay.textContent =
         currentSet;
 
 
-    // Reset message
-
     message.textContent =
         "Find the matching pair!";
+
 
     message.classList.remove(
         "penalty"
     );
 
 
-    // Generate new lock set
+    // Generate cards
 
     const generated =
         createLockSet();
@@ -278,21 +392,24 @@ function startSet() {
         generated.pairLock;
 
 
-    // Clear old locks
+    // Clear old cards
 
     lockBoard.innerHTML = "";
 
 
-    // Create all 10 lock cards
+    // Create the 10 cards
 
     generated.cards.forEach(
         (lockNumber, index) => {
 
             const card =
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
 
 
-            card.type = "button";
+            card.type =
+                "button";
 
 
             card.className =
@@ -307,31 +424,31 @@ function startSet() {
                 index;
 
 
-            // Create image
-
             const image =
-                document.createElement("img");
+                document.createElement(
+                    "img"
+                );
 
 
             image.src =
-                getLockImage(lockNumber);
+                getLockImage(
+                    lockNumber
+                );
 
 
             image.alt =
                 `Lock ${lockNumber}`;
 
 
-            // Add image to card
-
-            card.appendChild(image);
-
-
-            // Add card to board
-
-            lockBoard.appendChild(card);
+            card.appendChild(
+                image
+            );
 
 
-            // Click event
+            lockBoard.appendChild(
+                card
+            );
+
 
             card.addEventListener(
                 "click",
@@ -384,12 +501,12 @@ function updateTimer() {
         ) / 1000;
 
 
-    const displayedTime =
-        elapsed + penaltyTime;
-
+    // NO PENALTY TIME IS ADDED.
+    // Wrong guesses simply cause a 3-second
+    // period where the player cannot click.
 
     timerDisplay.textContent =
-        displayedTime.toFixed(2);
+        elapsed.toFixed(2);
 
 }
 
@@ -400,29 +517,34 @@ function updateTimer() {
 
 function selectLock(card) {
 
-    // BLOCK ALL CLICKING
-    // during wrong-pair penalty
+    // Completely block clicks during cooldown
 
     if (!acceptingClicks) {
         return;
     }
 
 
-    // Ignore if already selected
+    // Don't select same card twice
 
     if (
         selectedLocks.includes(card)
     ) {
+
         return;
+
     }
 
 
-    // Ignore completed pair
+    // Don't select completed card
 
     if (
-        card.classList.contains("correct")
+        card.classList.contains(
+            "correct"
+        )
     ) {
+
         return;
+
     }
 
 
@@ -433,7 +555,9 @@ function selectLock(card) {
     );
 
 
-    selectedLocks.push(card);
+    selectedLocks.push(
+        card
+    );
 
 
     // Wait for second card
@@ -447,8 +571,6 @@ function selectLock(card) {
     }
 
 
-    // Two cards selected
-
     checkPair();
 
 }
@@ -460,7 +582,7 @@ function selectLock(card) {
 
 function checkPair() {
 
-    // Immediately block additional clicks
+    // Lock board immediately
 
     acceptingClicks = false;
 
@@ -486,7 +608,7 @@ function checkPair() {
 
 
     // ==================================================
-    // CORRECT PAIR
+    // CORRECT
     // ==================================================
 
     if (
@@ -524,8 +646,6 @@ function checkPair() {
         );
 
 
-        // Calculate set time
-
         const elapsed =
             (
                 performance.now()
@@ -535,10 +655,8 @@ function checkPair() {
 
 
         const finalSetTime =
-            elapsed + penaltyTime;
+            elapsed;
 
-
-        // Save result
 
         completedTimes.push(
             finalSetTime
@@ -551,13 +669,14 @@ function checkPair() {
         );
 
 
-        // Move to next set
+        // Next set
 
         setTimeout(
             () => {
 
                 if (
-                    currentSet >= TOTAL_SETS
+                    currentSet >=
+                    TOTAL_SETS
                 ) {
 
                     finishGame();
@@ -568,7 +687,6 @@ function checkPair() {
 
 
                 currentSet++;
-
 
                 startSet();
 
@@ -583,7 +701,7 @@ function checkPair() {
 
 
     // ==================================================
-    // WRONG PAIR
+    // WRONG
     // ==================================================
 
     first.classList.add(
@@ -597,7 +715,7 @@ function checkPair() {
 
 
     message.textContent =
-        `✗ Wrong! +${PENALTY_SECONDS} seconds penalty`;
+        `✗ Wrong! Wait ${WRONG_COOLDOWN_SECONDS} seconds`;
 
 
     message.classList.add(
@@ -605,59 +723,63 @@ function checkPair() {
     );
 
 
-    // Add 3-second penalty
+    /*
+        IMPORTANT:
 
-    penaltyTime +=
-        PENALTY_SECONDS;
+        The two wrong cards stay dark.
 
+        The player cannot click ANYTHING
+        for exactly 3 seconds.
 
-    // ==================================================
-    // IMPORTANT
-    // ==================================================
-    //
-    // NO CLICKING IS ALLOWED
-    // DURING THE FULL 3 SECONDS.
-    //
-
-    acceptingClicks = false;
+        The timer DOES NOT receive +3 seconds.
+    */
 
 
-    // Wait exactly 3 seconds
+    wrongCooldownTimeout =
+        setTimeout(
+            () => {
 
-    setTimeout(
-        () => {
+                // Remove dark/wrong appearance
 
-            first.classList.remove(
-                "selected",
-                "wrong"
-            );
-
-
-            second.classList.remove(
-                "selected",
-                "wrong"
-            );
+                first.classList.remove(
+                    "selected",
+                    "wrong"
+                );
 
 
-            selectedLocks = [];
+                second.classList.remove(
+                    "selected",
+                    "wrong"
+                );
 
 
-            // Allow clicking again
+                // Clear the previous selection
 
-            acceptingClicks = true;
-
-
-            message.textContent =
-                "Try again!";
+                selectedLocks = [];
 
 
-            message.classList.remove(
-                "penalty"
-            );
+                // Allow clicking again
 
-        },
-        PENALTY_SECONDS * 1000
-    );
+                acceptingClicks = true;
+
+
+                // Reset message
+
+                message.textContent =
+                    "Find the matching pair!";
+
+
+                message.classList.remove(
+                    "penalty"
+                );
+
+
+                wrongCooldownTimeout =
+                    null;
+
+            },
+            WRONG_COOLDOWN_SECONDS * 1000
+        );
 
 }
 
@@ -702,12 +824,11 @@ function finishGame() {
 
     acceptingClicks = false;
 
+
     clearInterval(
         timerInterval
     );
 
-
-    // Calculate total
 
     const total =
         completedTimes.reduce(
@@ -717,26 +838,18 @@ function finishGame() {
         );
 
 
-    // Calculate average
-
     const average =
         total /
         completedTimes.length;
 
 
-    // Display average in timer
-
     timerDisplay.textContent =
         average.toFixed(2);
 
 
-    // Message
-
     message.textContent =
         "🏆 All 5 sets completed!";
 
-
-    // Final results
 
     finalTotal.textContent =
         `Total: ${total.toFixed(2)} seconds`;
@@ -753,154 +866,44 @@ function finishGame() {
 
 
 // ======================================================
-// COUNTDOWN
-// ======================================================
-
-function runCountdown() {
-
-    if (countdownRunning) {
-        return;
-    }
-
-
-    countdownRunning = true;
-
-    acceptingClicks = false;
-
-
-    // Hide start screen
-
-    startScreen.style.display =
-        "none";
-
-
-    // Show countdown
-
-    countdown.style.display =
-        "flex";
-
-
-    let count = 3;
-
-
-    countdown.textContent =
-        count;
-
-
-    const countdownInterval =
-        setInterval(
-            () => {
-
-                count--;
-
-
-                if (count > 0) {
-
-                    countdown.textContent =
-                        count;
-
-                    return;
-
-                }
-
-
-                // GO
-
-                countdown.textContent =
-                    "GO!";
-
-
-                clearInterval(
-                    countdownInterval
-                );
-
-
-                // Short GO display
-
-                setTimeout(
-                    () => {
-
-                        countdown.style.display =
-                            "none";
-
-
-                        countdownRunning =
-                            false;
-
-
-                        // Create locks
-                        // and start timer
-
-                        startGame();
-
-                    },
-                    500
-                );
-
-            },
-            1000
-        );
-
-}
-
-
-// ======================================================
-// START BUTTON
-// ======================================================
-
-startButton.addEventListener(
-    "click",
-    () => {
-
-        runCountdown();
-
-    }
-);
-
-
-// ======================================================
-// RESET BUTTON
+// RESET
 // ======================================================
 
 resetButton.addEventListener(
     "click",
     () => {
 
-        // Stop timer
-
         clearInterval(
             timerInterval
         );
 
 
-        // Reset everything
+        if (wrongCooldownTimeout) {
 
-        currentSet = 1;
+            clearTimeout(
+                wrongCooldownTimeout
+            );
 
-        selectedLocks = [];
+            wrongCooldownTimeout =
+                null;
 
-        completedTimes = [];
-
-        penaltyTime = 0;
-
-        gameFinished = false;
-
-        acceptingClicks = false;
+        }
 
 
-        // Clear board
+        lockBoard.innerHTML =
+            "";
 
-        lockBoard.innerHTML = "";
+
+        startScreen.style.display =
+            "flex";
 
 
-        // Reset display
+        countdown.style.display =
+            "none";
+
 
         timerDisplay.textContent =
             "0.00";
-
-
-        setNumberDisplay.textContent =
-            "1";
 
 
         message.textContent =
@@ -912,26 +915,22 @@ resetButton.addEventListener(
         );
 
 
-        setTimes.innerHTML =
-            "";
+        currentSet = 1;
 
+        completedTimes = [];
+
+        selectedLocks = [];
+
+        acceptingClicks = false;
+
+        gameFinished = false;
+
+        countdownRunning = false;
+
+        setTimes.innerHTML = "";
 
         finalResult.style.display =
             "none";
-
-
-        // Show START screen
-
-        startScreen.style.display =
-            "flex";
-
-
-        countdown.style.display =
-            "none";
-
-
-        countdownRunning =
-            false;
 
     }
 );

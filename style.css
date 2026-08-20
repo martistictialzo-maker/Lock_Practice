@@ -1,206 +1,162 @@
-/* ========================================= */
-/* RESET */
-/* ========================================= */
+/* ======================================================
+   GENERAL
+====================================================== */
 
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
-
 html,
 body {
-    width: 100%;
+    margin: 0;
+    padding: 0;
     min-height: 100%;
 }
 
-
-/* ========================================= */
-/* BODY */
-/* ========================================= */
-
 body {
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 
     background:
         linear-gradient(
             135deg,
-            #dff8ff 0%,
-            #aee7f5 45%,
-            #79d2e8 100%
+            #dff8ff,
+            #b9e9f5
         );
 
-    color: #111;
+    color: #123f55;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     min-height: 100vh;
 
-    padding: 25px;
-
-    overflow-x: hidden;
+    padding: 20px;
 }
 
 
-/* ========================================= */
-/* GAME CONTAINER */
-/* ========================================= */
+/* ======================================================
+   GAME CONTAINER
+====================================================== */
 
 .game {
+    width: min(100%, 1100px);
 
-    width: 100%;
+    min-height: 700px;
 
-    max-width: 1100px;
+    padding: 28px;
 
-    margin: 0 auto;
-
-    padding: 25px;
-
-    text-align: center;
+    border-radius: 20px;
 
     background:
-        rgba(255, 255, 255, 0.32);
+        rgba(235, 250, 255, 0.65);
 
-    border:
-        2px solid
-        rgba(255, 255, 255, 0.75);
-
-    border-radius: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
 
     box-shadow:
-        0 10px 35px
-        rgba(0, 80, 120, 0.18);
+        0 10px 35px rgba(50, 120, 150, 0.18);
 
-    backdrop-filter:
-        blur(8px);
+    position: relative;
 }
 
 
-/* ========================================= */
-/* HEADER */
-/* ========================================= */
+/* ======================================================
+   HEADER
+====================================================== */
 
-.header {
+.gameContent > h1 {
+    text-align: center;
 
-    margin-bottom: 22px;
+    margin: 0 0 12px;
 
+    font-size: clamp(28px, 4vw, 52px);
+
+    color: #050505;
 }
 
 
-/* ========================================= */
-/* TITLE */
-/* ========================================= */
+/* ======================================================
+   SET
+====================================================== */
 
-.header h1 {
+.setDisplay {
+    text-align: center;
 
-    font-size:
-        clamp(30px, 5vw, 52px);
-
-    font-weight: 700;
-
-    color: #101010;
-
-    margin-bottom: 12px;
-
-    text-shadow:
-        2px 2px 0
-        rgba(255, 255, 255, 0.7);
-}
-
-
-/* ========================================= */
-/* SET INFO */
-/* ========================================= */
-
-.setInfo {
-
-    font-size: 22px;
+    font-size: clamp(20px, 3vw, 28px);
 
     font-weight: bold;
 
-    color: #164c62;
-
-    margin-bottom: 7px;
+    margin-bottom: 8px;
 }
 
 
-/* ========================================= */
-/* TIMER */
-/* ========================================= */
+/* ======================================================
+   TIMER
+====================================================== */
 
 .timer {
+    text-align: center;
 
-    font-size: 20px;
-
-    color: #234f60;
+    font-size: clamp(22px, 3vw, 30px);
 
     font-weight: bold;
+
+    margin-bottom: 28px;
+}
+
+.timer span:first-child {
+    color: #050505;
 }
 
 
-#timer {
-
-    font-size: 26px;
-
-    color: #111;
-
-}
-
-
-/* ========================================= */
-/* LOCK BOARD */
-/* ========================================= */
+/* ======================================================
+   LOCK BOARD
+====================================================== */
 
 .lockBoard {
-
-    width: 100%;
-
-    max-width: 900px;
+    width: min(100%, 850px);
 
     margin: 0 auto;
 
     display: grid;
 
-    grid-template-columns:
-        repeat(5, 1fr);
+    grid-template-columns: repeat(5, 1fr);
 
-    gap: 18px;
+    column-gap: 7px;
+    row-gap: 12px;
 
-    justify-items: center;
+    padding: 18px;
 
-    align-items: center;
-
-    padding: 20px;
+    border-radius: 18px;
 
     background:
-        rgba(255, 255, 255, 0.25);
+        linear-gradient(
+            180deg,
+            rgba(218, 245, 250, 0.72),
+            rgba(155, 224, 239, 0.72)
+        );
 
-    border-radius: 15px;
+    box-shadow:
+        0 8px 20px rgba(40, 120, 145, 0.12);
 
+    border: 1px solid rgba(255, 255, 255, 0.55);
 }
 
 
-/* ========================================= */
-/* LOCK CARD */
-/* ========================================= */
+/* ======================================================
+   LOCK CARD
+====================================================== */
 
 .lockCard {
+    width: 90%;
 
-    width: 145px;
-
-    height: 145px;
+    aspect-ratio: 1 / 1;
 
     border: none;
 
-    border-radius: 10px;
+    border-radius: 9px;
 
-    padding: 0;
-
-    background:
-        rgba(220, 247, 255, 0.75);
+    padding: 2px;
 
     cursor: pointer;
 
@@ -212,104 +168,88 @@ body {
 
     overflow: hidden;
 
-    transition:
-        transform 0.15s ease,
-        background 0.15s ease,
-        box-shadow 0.15s ease;
+    background:
+        linear-gradient(
+            180deg,
+            #d8f1f5 0%,
+            #a7dce7 42%,
+            #43c2d5 100%
+        );
 
     box-shadow:
-        0 4px 10px
-        rgba(0, 80, 110, 0.12);
+        0 4px 10px rgba(35, 110, 130, 0.15);
+
+    transition:
+        transform 0.12s ease,
+        background 0.12s ease,
+        box-shadow 0.12s ease;
 }
 
+/* Transparent images sit on this box */
+.lockCard img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    transform: scale(1.155);
+}
 
-/* ========================================= */
-/* LOCK HOVER */
-/* ========================================= */
+/* Hover */
 
 .lockCard:hover {
 
-    transform:
-        translateY(-3px);
-
-    background:
-        rgba(200, 240, 250, 0.95);
+    transform: translateY(-2px);
 
     box-shadow:
-        0 7px 16px
-        rgba(0, 80, 110, 0.22);
+        0 7px 16px rgba(40, 100, 125, 0.25);
 }
 
 
-/* ========================================= */
-/* SELECTED LOCK */
-/* ========================================= */
-
+/* Selected */
 .lockCard.selected {
-
     background:
-        #75aeca;
+        linear-gradient(
+            180deg,
+            #b9e5ed 0%,
+            #78c8d7 45%,
+            #299fb6 100%
+        );
 
     box-shadow:
-        0 0 0 3px
-        rgba(20, 100, 140, 0.35);
-
-    transform:
-        scale(0.97);
+        inset 0 0 0 3px #438fa3,
+        0 4px 10px rgba(35, 110, 130, 0.2);
 }
-
-
-/* ========================================= */
-/* LOCK IMAGE */
-/* ========================================= */
-
-.lockCard img {
-
-    width: 100%;
-
-    height: 100%;
-
-    object-fit: contain;
-
-    display: block;
-
-    pointer-events: none;
-}
-
-
-/* ========================================= */
-/* CORRECT PAIR */
-/* ========================================= */
-
-.lockCard.correct {
-
-    background:
-        #72c98b;
-
-    box-shadow:
-        0 0 0 4px
-        rgba(35, 150, 75, 0.45);
-
-}
-
-
-/* ========================================= */
-/* WRONG PAIR */
-/* ========================================= */
+/* Wrong */
 
 .lockCard.wrong {
 
     background:
-        #d87575;
+        #6e9faf;
 
     animation:
-        shake 0.35s ease;
+        shake 0.18s linear 2;
 }
 
 
-/* ========================================= */
-/* SHAKE */
-/* ========================================= */
+/* Correct */
+
+.lockCard.correct {
+
+    background:
+        #83b7c7;
+
+    box-shadow:
+        inset 0 0 0 3px #4e8ea5;
+
+    cursor: default;
+
+    opacity: 0.8;
+}
+
+
+/* ======================================================
+   SHAKE
+====================================================== */
 
 @keyframes shake {
 
@@ -318,11 +258,11 @@ body {
     }
 
     25% {
-        transform: translateX(-7px);
+        transform: translateX(-5px);
     }
 
     50% {
-        transform: translateX(7px);
+        transform: translateX(5px);
     }
 
     75% {
@@ -336,394 +276,206 @@ body {
 }
 
 
-/* ========================================= */
-/* MESSAGE */
-/* ========================================= */
+/* ======================================================
+   MESSAGE
+====================================================== */
 
 .message {
 
-    min-height: 30px;
+    text-align: center;
 
-    margin-top: 18px;
-
-    font-size: 19px;
+    font-size: clamp(18px, 2.5vw, 24px);
 
     font-weight: bold;
 
-    color: #164c62;
+    margin: 20px 0;
 }
-
-
-/* ========================================= */
-/* PENALTY */
-/* ========================================= */
 
 .message.penalty {
 
-    color: #b52222;
+    color: #9b3434;
 
 }
 
 
-/* ========================================= */
-/* RESULTS */
-/* ========================================= */
+/* ======================================================
+   SET TIMES
+====================================================== */
 
-.results {
+.setTimesBox {
 
-    margin:
-        18px auto 0;
+    width: min(100%, 500px);
 
-    width: 100%;
+    margin: 0 auto;
 
-    max-width: 500px;
+    padding: 18px;
 
-    padding: 15px;
+    border-radius: 14px;
 
     background:
-        rgba(255, 255, 255, 0.45);
+        rgba(245, 252, 255, 0.75);
 
-    border-radius: 12px;
-
+    text-align: center;
 }
 
+.setTimesTitle {
 
-/* ========================================= */
-/* RESULTS TITLE */
-/* ========================================= */
-
-.resultsTitle {
-
-    font-size: 19px;
+    font-size: 20px;
 
     font-weight: bold;
 
-    margin-bottom: 8px;
-
-    color: #164c62;
+    margin-bottom: 10px;
 }
-
-
-/* ========================================= */
-/* SET TIMES */
-/* ========================================= */
-
-#setTimes {
-
-    display: flex;
-
-    justify-content: center;
-
-    flex-wrap: wrap;
-
-    gap: 10px;
-}
-
-
-/* ========================================= */
-/* RESULT ITEM */
-/* ========================================= */
 
 .resultItem {
 
-    padding:
-        7px 12px;
+    display: inline-block;
 
-    background:
-        rgba(255, 255, 255, 0.7);
+    margin: 4px;
+
+    padding: 7px 10px;
 
     border-radius: 8px;
 
+    background: #e9f8fc;
+
+    font-weight: bold;
+
     font-size: 14px;
-
-    font-weight: bold;
-
-    color: #234f60;
 }
 
 
-/* ========================================= */
-/* RESET BUTTON */
-/* ========================================= */
-
-.resetButton {
-
-    margin-top: 18px;
-
-    width: 170px;
-
-    height: 48px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background:
-        #238bb0;
-
-    color: white;
-
-    font-size: 17px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.15s ease,
-        filter 0.15s ease;
-}
-
-
-.resetButton:hover {
-
-    filter:
-        brightness(1.08);
-
-    transform:
-        translateY(-2px);
-}
-
-
-.resetButton:active {
-
-    transform:
-        scale(0.95);
-}
-
-
-/* ========================================= */
-/* FINAL RESULT */
-/* ========================================= */
+/* ======================================================
+   FINAL RESULT
+====================================================== */
 
 .finalResult {
 
     display: none;
 
-    margin-top: 20px;
+    text-align: center;
+
+    margin: 20px auto;
 
     padding: 20px;
 
-    background:
-        rgba(255, 255, 255, 0.65);
+    width: min(100%, 500px);
 
     border-radius: 14px;
 
-    color: #163f50;
+    background:
+        rgba(255, 255, 255, 0.75);
+}
+
+.finalResult h2 {
+
+    margin-top: 0;
+}
+
+
+/* ======================================================
+   RESET
+====================================================== */
+
+.resetButton {
+
+    display: block;
+
+    margin: 20px auto 0;
+
+    border: none;
+
+    border-radius: 10px;
+
+    padding: 12px 40px;
+
+    font-size: 17px;
 
     font-weight: bold;
+
+    color: white;
+
+    background: #258eb5;
+
+    cursor: pointer;
+}
+
+.resetButton:hover {
+
+    background: #197b9e;
 }
 
 
-/* ========================================= */
-/* FINAL TITLE */
-/* ========================================= */
-
-.finalTitle {
-
-    font-size: 30px;
-
-    margin-bottom: 10px;
-}
-
-
-/* ========================================= */
-/* FINAL TEXT */
-/* ========================================= */
-
-#finalTotal,
-#finalAverage {
-
-    font-size: 18px;
-
-    margin-top: 5px;
-}
-
-
-/* ========================================= */
-/* TABLET */
-/* ========================================= */
-
-@media (max-width: 850px) {
-
-    body {
-        padding: 12px;
-    }
-
-    .game {
-        padding: 15px;
-    }
-
-    .lockBoard {
-
-        grid-template-columns:
-            repeat(3, 1fr);
-
-        gap: 14px;
-
-    }
-
-    .lockCard {
-
-        width: 125px;
-
-        height: 125px;
-
-    }
-
-}
-
-
-/* ========================================= */
-/* MOBILE */
-/* ========================================= */
-
-@media (max-width: 500px) {
-
-    .header h1 {
-
-        font-size: 29px;
-
-    }
-
-    .lockBoard {
-
-        grid-template-columns:
-            repeat(3, 1fr);
-
-        gap: 8px;
-
-        padding: 10px;
-
-    }
-
-    .lockCard {
-
-        width: 95px;
-
-        height: 95px;
-
-    }
-
-    .setInfo {
-
-        font-size: 18px;
-
-    }
-
-    .timer {
-
-        font-size: 17px;
-
-    }
-
-    #timer {
-
-        font-size: 22px;
-
-    }
-
-}
-
-
-/* ========================================= */
-/* VERY SMALL PHONE */
-/* ========================================= */
-
-@media (max-width: 360px) {
-
-    .lockCard {
-
-        width: 82px;
-
-        height: 82px;
-
-    }
-
-    .lockBoard {
-
-        gap: 6px;
-
-    }
-
-}
-
-/* ========================================= */
-/* START SCREEN */
-/* ========================================= */
+/* ======================================================
+   START SCREEN
+====================================================== */
 
 .startScreen {
+
     position: absolute;
 
     inset: 0;
 
-    z-index: 100;
+    z-index: 20;
+
+    border-radius: 20px;
+
+    background:
+        rgba(220, 247, 253, 0.96);
 
     display: flex;
+
+    flex-direction: column;
 
     justify-content: center;
 
     align-items: center;
 
-    background:
-        rgba(180, 235, 248, 0.92);
+    text-align: center;
+}
 
-    border-radius: 18px;
+.startScreen h1 {
+
+    font-size:
+        clamp(28px, 6vw, 55px);
+
+    color: #050505;
+
+    margin: 0 20px 35px;
 }
 
 
-/* ========================================= */
-/* START BUTTON */
-/* ========================================= */
-
 .startButton {
-
-    width: 220px;
-
-    height: 75px;
 
     border: none;
 
-    border-radius: 15px;
+    border-radius: 12px;
 
-    background: #238bb0;
+    padding: 15px 55px;
+
+    font-size: 22px;
+
+    font-weight: bold;
 
     color: white;
 
-    font-size: 30px;
-
-    font-weight: bold;
+    background: #258eb5;
 
     cursor: pointer;
 
     box-shadow:
-        0 6px 15px
-        rgba(0, 80, 110, 0.25);
-
-    transition:
-        transform 0.15s ease,
-        filter 0.15s ease;
+        0 6px 15px rgba(30, 110, 140, 0.25);
 }
-
-
-.startButton:hover {
-
-    transform: scale(1.05);
-
-    filter: brightness(1.1);
-}
-
 
 .startButton:active {
 
-    transform: scale(0.95);
-
+    transform: scale(0.96);
 }
 
 
-/* ========================================= */
-/* COUNTDOWN */
-/* ========================================= */
+/* ======================================================
+   COUNTDOWN
+====================================================== */
 
 .countdown {
 
@@ -731,7 +483,7 @@ body {
 
     inset: 0;
 
-    z-index: 200;
+    z-index: 50;
 
     display: none;
 
@@ -739,15 +491,208 @@ body {
 
     align-items: center;
 
-    pointer-events: none;
-
-    font-size: clamp(100px, 20vw, 220px);
-
-    font-weight: bold;
+    background:
+        rgba(20, 80, 100, 0.45);
 
     color: white;
 
+    font-size:
+        clamp(80px, 20vw, 180px);
+
+    font-weight: bold;
+
     text-shadow:
-        5px 5px 0 #164c62;
+        0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+
+/* ======================================================
+   TABLET / IPAD
+====================================================== */
+
+@media (max-width: 800px) {
+
+    body {
+        padding: 12px;
+    }
+
+    .game {
+
+        min-height: auto;
+
+        padding: 18px;
+
+        border-radius: 16px;
+    }
+
+        .lockBoard {
+            column-gap: 6px;
+            row-gap: 12px;
+            padding: 14px;
+        }
+
+    .lockCard {
+
+        border-radius: 10px;
+
+        padding: 6px;
+    }
+
+}
+
+
+/* ======================================================
+   PHONE
+====================================================== */
+
+@media (max-width: 500px) {
+
+    body {
+
+        padding: 7px;
+
+        align-items: flex-start;
+    }
+
+    .game {
+        width: min(100%, 1100px);
+
+        min-height: 700px;
+
+        padding: 28px;
+
+        border-radius: 18px;
+
+        background:
+            linear-gradient(
+                180deg,
+                rgba(225, 247, 251, 0.88) 0%,
+                rgba(182, 232, 241, 0.82) 45%,
+                rgba(108, 207, 224, 0.78) 100%
+            );
+
+        border: 1px solid rgba(255, 255, 255, 0.8);
+
+        box-shadow:
+            0 10px 35px rgba(40, 120, 145, 0.18);
+
+        position: relative;
+    }
+
+    .gameContent > h1 {
+
+        font-size: 25px;
+
+        line-height: 1.1;
+
+        margin-bottom: 10px;
+    }
+
+    .setDisplay {
+
+        font-size: 18px;
+    }
+
+    .timer {
+
+        font-size: 21px;
+
+        margin-bottom: 14px;
+    }
+
+        .lockBoard {
+            width: min(100%, 850px);
+
+            margin: 0 auto;
+
+            display: grid;
+
+            grid-template-columns: repeat(5, 1fr);
+
+            column-gap: 6px;
+            row-gap: 12px;
+
+            padding: 12px;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(218, 245, 250, 0.72),
+                    rgba(155, 224, 239, 0.72)
+                );
+
+            box-shadow:
+                0 8px 20px rgba(40, 120, 145, 0.12);
+
+            border: 1px solid rgba(255, 255, 255, 0.55);
+        }
+
+    .lockCard {
+
+        padding: 3px;
+
+        border-radius: 7px;
+    }
+
+    .message {
+
+        font-size: 17px;
+
+        margin: 14px 0;
+    }
+
+    .setTimesBox {
+
+        padding: 12px;
+    }
+
+    .setTimesTitle {
+
+        font-size: 17px;
+    }
+
+    .resultItem {
+
+        font-size: 12px;
+
+        padding: 5px 7px;
+
+        margin: 2px;
+    }
+
+    .resetButton {
+
+        width: 100%;
+
+        padding: 11px;
+    }
+
+}
+
+
+/* ======================================================
+   VERY SMALL PHONES
+====================================================== */
+
+@media (max-width: 360px) {
+
+    .gameContent > h1 {
+
+        font-size: 22px;
+    }
+
+    .lockBoard {
+
+        gap: 4px;
+
+        padding: 6px;
+    }
+
+    .lockCard {
+
+        padding: 2px;
+    }
 
 }

@@ -3,11 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Beijing Lock Matching Practice</title>
 
@@ -18,132 +14,98 @@
 
     <main class="game">
 
-        <!-- ========================================= -->
-        <!-- START COUNTDOWN -->
-        <!-- ========================================= -->
-
+        <!-- START SCREEN -->
         <div class="startScreen" id="startScreen">
+
+            <h1>Select The 2 Matching Locks!</h1>
 
             <button
                 class="startButton"
                 id="startButton"
-                type="button"
-            >
+                type="button">
                 START
             </button>
 
         </div>
 
 
+        <!-- COUNTDOWN -->
         <div
             class="countdown"
-            id="countdown"
-        >
+            id="countdown">
             3
         </div>
-        <!-- ========================================= -->
-        <!-- HEADER -->
-        <!-- ========================================= -->
 
-        <header class="header">
 
-            <h1>
-                Select The 2 Matching Locks!
-            </h1>
+        <!-- GAME -->
+        <section class="gameContent">
 
-            <div class="setInfo">
+            <h1>Select The 2 Matching Locks!</h1>
+
+            <div class="setDisplay">
                 SET <span id="setNumber">1</span>/5
             </div>
 
             <div class="timer">
                 <span id="timer">0.00</span>
-                seconds
+                <span>seconds</span>
             </div>
 
-        </header>
+
+            <!-- LOCK BOARD -->
+            <div
+                class="lockBoard"
+                id="lockBoard">
+            </div>
 
 
-        <!-- ========================================= -->
-        <!-- LOCK BOARD -->
-        <!-- ========================================= -->
+            <!-- MESSAGE -->
+            <div
+                class="message"
+                id="message">
+                Find the matching pair!
+            </div>
 
-        <section
-            class="lockBoard"
-            id="lockBoard"
-        >
 
-            <!-- JavaScript creates the 9 locks here -->
+            <!-- SET TIMES -->
+            <div class="setTimesBox">
+
+                <div class="setTimesTitle">
+                    Set Times
+                </div>
+
+                <div id="setTimes"></div>
+
+            </div>
+
+
+            <!-- FINAL RESULT -->
+            <div
+                class="finalResult"
+                id="finalResult">
+
+                <h2>🏆 Finished!</h2>
+
+                <div id="finalTotal">
+                    Total: 0.00 seconds
+                </div>
+
+                <div id="finalAverage">
+                    Average: 0.00 seconds
+                </div>
+
+            </div>
+
+
+            <!-- RESET -->
+            <button
+                class="resetButton"
+                id="resetButton"
+                type="button">
+                RESET
+            </button>
 
         </section>
-
-
-        <!-- ========================================= -->
-        <!-- MESSAGE -->
-        <!-- ========================================= -->
-
-        <div
-            class="message"
-            id="message"
-        >
-            Find the matching pair!
-        </div>
-
-
-        <!-- ========================================= -->
-        <!-- SET RESULTS -->
-        <!-- ========================================= -->
-
-        <div
-            class="results"
-            id="results"
-        >
-
-            <div class="resultsTitle">
-                Set Times
-            </div>
-
-            <div id="setTimes">
-                <!-- Results appear here -->
-            </div>
-
-        </div>
-
-
-        <!-- ========================================= -->
-        <!-- RESET -->
-        <!-- ========================================= -->
-
-        <button
-            class="resetButton"
-            id="resetButton"
-            type="button"
-        >
-            RESET
-        </button>
-
-
-        <!-- ========================================= -->
-        <!-- FINAL RESULT -->
-        <!-- ========================================= -->
-
-        <div
-            class="finalResult"
-            id="finalResult"
-        >
-
-            <div class="finalTitle">
-                🏆 COMPLETE!
-            </div>
-
-            <div id="finalTotal">
-                Total: 0.00 seconds
-            </div>
-
-            <div id="finalAverage">
-                Average: 0.00 seconds
-            </div>
-
-        </div>
 
     </main>
 
