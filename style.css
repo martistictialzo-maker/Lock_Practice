@@ -192,6 +192,12 @@ body {
     object-fit: contain;
     display: block;
     transform: scale(1.155);
+
+    /* Prevent image dragging */
+    user-select: none;
+    -webkit-user-drag: none;
+    user-drag: none;
+    pointer-events: none;
 }
 
 /* Hover */
